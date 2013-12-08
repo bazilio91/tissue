@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet/less" type="text/css" href="styles/app.less"/>
+    <script src="http://localhost:35729/livereload.js"></script>
+    <script src="bower_components/less/dist/less-1.5.1.min.js"></script>
+    <script type="text/javascript" data-main="scripts/main.js" src="bower_components/requirejs/require.js"></script>
+
+</head>
+<body>
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+        </ul>
+    </div>
+
+    <!-- Page content -->
+    <div id="page-content-wrapper">
+        <div class="content-header">
+            <h1>
+                <a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i></a>
+                Simple Sidebar
+            </h1>
+        </div>
+        <!-- Keep all page content within the page-content inset div! -->
+        <div class="page-content inset" id="main">
+            Hello! We are using node.js
+            <script>document.write(process.version)</script>
+        </div>
+    </div>
+
+</div>
+<script type="text/html" id="browser-item">
+    <span class="b-browser-item__open icon-play"></span>
+    <span class="b-browser-item__close icon-stop"></span>
+    <a href="#" class="js-browser-item__trigger"><%= agentName %>:<%= name %></a>
+</script>
+</body>
+</html>

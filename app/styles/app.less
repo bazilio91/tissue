@@ -1,0 +1,30 @@
+@import "../bower_components/bootstrap/less/bootstrap";
+@import "blocks/sidebar";
+@import "styles";
+
+@green : #3cab35;
+@red: #ff3d36;
+
+.b-browser-item {
+  .b-browser-item__close,
+  .b-browser-item__open {
+    float: right;
+    margin-right: 20px;
+  }
+  .b-browser-item__close {
+    display: none;
+    color: @red;
+  }
+  .b-browser-item__open {
+    color: @green;
+  }
+
+  &.open {
+    .b-browser-item__open {
+      display: none;
+    }
+    .b-browser-item__close {
+      display: inline;
+    }
+  }
+}

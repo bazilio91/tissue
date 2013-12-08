@@ -1,0 +1,32 @@
+{
+    "name": "tissue",
+    "version": "0.0.0",
+    "description": "Browser tab sync & testing tool",
+    "main": "app/index.html",
+    "window": {
+        "title": "Tissue",
+        "toolbar": true
+    },
+    "scripts": {
+        "test": "grunt test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "asd"
+    },
+    "author": "Vasily Ostanin",
+    "license": "BSD-2-Clause",
+
+    "dependencies": {
+        "nodewebkit": "*",
+        "socket.io": "*",
+        "socket.io-client": "*",
+        "lodash": "*",
+        "which": "*"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.0",
+        "load-grunt-tasks": "~0.1.0",
+        "grunt-contrib-watch": "~0.5.2"
+    }
+}
