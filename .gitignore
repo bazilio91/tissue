@@ -1,4 +1,8 @@
 /node_modules
 /app/bower_components
-
+/webkitbuilds
+/.tmp
 /.idea
+/*.iml
+
+.DS_Store

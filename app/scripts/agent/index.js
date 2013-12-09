@@ -1,12 +1,12 @@
-var browserManager = require('./lib/browsers'),
-    io = require('socket.io-client'),
+var browserManager = require('./browsers'),
+    io = require('./socket.io-client'),
     os = require('os'),
     _ = require('lodash');
 
 var Agent = function (uri) {
     'use strict';
-    var client = io.connect(uri);
-    var browsers = {};
+    var client = io.connect(uri),
+        browsers = {};
 
     return {
         name: os.hostname() || 'local',
@@ -23,7 +23,6 @@ var Agent = function (uri) {
         },
 
         onConnect: function () {
-            this.sendInfo();
             this.client.on('open', _.bind(this.onOpen, this));
             this.client.on('close', _.bind(this.onClose, this));
         },
@@ -32,7 +31,8 @@ var Agent = function (uri) {
             if (this.client.connected) {
                 this.onConnect();
             } else {
-                this.client.on('connect', _.bind(this.onConnect, this));
+                this.client.once('connect', _.bind(this.onConnect, this));
+                this.client.on('connect', _.bind(this.sendInfo, this));
             }
         },
 
@@ -65,8 +65,7 @@ var Agent = function (uri) {
     };
 }
 
-
-new Agent('http://localhost:20001').listen();
+module.exports = Agent;
 
 
 

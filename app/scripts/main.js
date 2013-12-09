@@ -31,8 +31,17 @@ App = {};
 define(['app'], function (App_) {
     App = App_;
     App.io = require('socket.io').listen(20001);
-    $(window).bind('beforeunload', function(){
+
+    var Agent = require('./scripts/agent/'),
+        agent = new Agent('http://localhost:20001');
+    App.io.server.once('listening', function () {
+        agent.listen();
+    });
+    App.agent = agent;
+    $(window).bind('beforeunload', function () {
         App.io.server.close();
+        agent.client.disconnect();
     });
     App.start();
 });
+

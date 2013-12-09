@@ -22,7 +22,7 @@
         <div class="content-header">
             <h1>
                 <a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i></a>
-                Simple Sidebar
+                Tissue
             </h1>
         </div>
         <!-- Keep all page content within the page-content inset div! -->
@@ -34,9 +34,10 @@
 
 </div>
 <script type="text/html" id="browser-item">
+    <span class="b-browser-item__logo <%= name %>" title="<%= name %>"></span>
     <span class="b-browser-item__open icon-play"></span>
     <span class="b-browser-item__close icon-stop"></span>
-    <a href="#" class="js-browser-item__trigger"><%= agentName %>:<%= name %></a>
+    <a href="#" class="js-browser-item__trigger"><%= agentName %></a>
 </script>
 </body>
 </html>
