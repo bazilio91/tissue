@@ -1,51 +1,36 @@
-
 var path = require('path');
+var _ = require('lodash');
 
-var browsers = [ "firefox", "chrome", "opera", "safari" ];
+var enabledBrowsers = [ "firefox", "chrome", "opera", "safari", 'yandex' ];
 
-var element34 = {
+var BrowserManager = function () {
+    "use strict";
 
-}
+    var browsers = {};
 
+    enabledBrowsers.map(function (browserName) {
+        var BrowserClass = require(path.join(__dirname, "lib", browserName)),
+            browser = new BrowserClass();
 
-browsers.map(function (browser) {
-    element34[browser] = require(path.join(__dirname, "lib", browser));
-});
-
-element34.browsers = function (onComplete) {
-    var onComplete = onComplete || function () {
-    };
-    var bs = browsers.slice(0);
-    var bf = [];
-    var checkBrowser = function () {
-        var b = bs.shift();
-        if (typeof b != "undefined") {
-            var browser = new element34[b]();
-            browser.isAvailable(function (err, res) {
-                if (res) bf.push(b);
-                checkBrowser();
-            }, false);
-        } else {
-            return onComplete(null, bf);
-        }
-    }
-    checkBrowser();
-}
-
-/*
- Open the given URL with any browser, with the preference for browser being listed above in order
- */
-element34.browser = function (url, onOpen) {
-    element34.browsers(function (err, browsers) {
-        if (browsers.length > 0) {
-            var b = new element34[browsers[0]];
-            b.open(url, function (err, browser) {
-                return onOpen(null, browser);
-            });
-        } else {
-            return onOpen(null, null);
-        }
+        browser.isAvailable(function (err, result) {
+            if (result) {
+                browsers[browserName] = BrowserClass;
+            }
+        });
     });
-}
 
-module.exports = element34;
+    return {
+        getBrowser: function (browserName) {
+            if (browsers[browserName]) {
+                return browsers[browserName];
+            }
+
+            throw new Error('Unknown browser ' + browserName);
+        },
+        getAvailable: function () {
+            return _.keys(browsers);
+        }
+    };
+};
+
+module.exports = BrowserManager;

@@ -4,31 +4,22 @@ var which = require('which');
 var os = require('os');
 var cp = require('child_process');
 var path = require('path');
+var _ = require('lodash');
 
-var Safari = function (options) {
-    Browser.prototype.constructor.apply(this, arguments);
-    this.name = "safari";
-}
+var Safari = function () {
+    return _.extend(Browser, {
+        name: 'safari',
+        browserPath: 'open',
+        args: [ '-a', 'Safari', '-n', '*URL*' ],
 
-Safari.prototype = new Browser();
-Safari.prototype.constructor = Safari;
+        isAvailable: function (onComplete) {
+            if (os.platform() === 'darwin') {
+                return onComplete(null, true);
+            }
 
-Safari.prototype.isAvailable = function (onComplete) {
-    if (os.platform() == "darwin") {
-        return onComplete(null, true);
-    } else return onComplete(null, false);
-}
-
-Safari.homeDir = function () {
-    return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-}
-
-Safari.prototype.prepare = function (onComplete) {
-    return onComplete(null, true);
-}
-
-Safari.prototype.openBrowser = function (url, onComplete) {
-
-}
+            return onComplete(null, false);
+        }
+    });
+};
 
 module.exports = Safari;

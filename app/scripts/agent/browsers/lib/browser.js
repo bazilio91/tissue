@@ -1,60 +1,50 @@
 var fs = require('fs');
 var path = require('path');
+var child_process = require('child_process');
 
-var Browser = function (options, name) {
-    this.options = options || {};
-}
+var Browser = {
+    proc: null,
+    args: [],
+    browserPath: null,
 
-Browser.log = function () {
-    var args = Array.prototype.slice.call(arguments, 0);
-    var line = args.join(" ");
-    console.log(line.white);
-}
+    isAvailable: function (onComplete) {
+        return onComplete(null, true);
+    },
+    openBrowser: function (url, onComplete) {
+        var browserArgs = this.args.map(function (arg) {
+            if (arg === '*URL*') {
+                return url;
+            }
 
-Browser.warn = function () {
-    var args = Array.prototype.slice.call(arguments, 0);
-    var line = args.join(" ");
-    console.log(line.yellow);
-}
+            return arg;
 
-Browser.error = function () {
-    var args = Array.prototype.slice.call(arguments, 0);
-    var line = args.join(" ");
-    console.log(line.red);
-}
+        });
 
-Browser.prototype.log = Browser.log;
-Browser.prototype.warn = Browser.warn;
-Browser.prototype.error = Browser.error;
-
-Browser.prototype.isAvailable = function (onComplete) {
-    return onComplete(null, true);
-}
-
-Browser.prototype.prepare = function (onComplete) {
-    return onComplete(null, true);
-}
-
-Browser.prototype.openBrowser = function (url, onComplete) {
-    return onComplete("Unimplemented");
-}
-
-Browser.prototype.open = function (url, onComplete) {
-    var self = this;
-    self.isAvailable(function (err, available) {
-        if (err) return onComplete(err);
-        if (available) {
-            self.prepare(function (err, ready) {
-                if (err) return onComplete(err);
-                if (ready) {
-                    self.openBrowser(url, onComplete);
-                } else return onComplete("Failed to prepare browser to run - " + err);
-            });
-        } else {
-            return onComplete(null, null);
+        this.proc = child_process.spawn(this.browserPath, browserArgs);
+        if (onComplete) {
+            onComplete(null);
         }
-    });
-}
+    },
+    open: function (url, onComplete) {
+        var self = this;
+        self.isAvailable(function (err, available) {
+            if (err) {
+                return onComplete(err);
+            }
+
+            if (available) {
+                self.openBrowser(url, onComplete);
+            } else {
+                return onComplete(null, null);
+            }
+        });
+    },
+    close: function () {
+        if (this.proc) {
+            this.proc.kill();
+        }
+    }
+};
 
 
 module.exports = Browser;

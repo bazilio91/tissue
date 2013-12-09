@@ -2,62 +2,36 @@ var Browser = require('./browser');
 var fs = require('fs');
 var which = require('which');
 var os = require('os');
-var cp = require('child_process');
 var path = require('path');
 var child_process = require('child_process');
+var _ = require('lodash');
 
-var Chrome = function (options) {
-    Browser.prototype.constructor.apply(this, arguments);
-    this.name = "chrome";
-}
+var Chrome = function () {
+    "use strict";
 
-Chrome.prototype = new Browser();
-Chrome.prototype.constructor = Chrome;
+    return _.extend(Browser, {
+        name: "chrome",
+        paths: [ "/usr/bin/google-chrome", "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome", "%HOMEPATH%i\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe", "C:\\Users\\%USERNAME%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe" ],
+        args: [ '*URL*', '--user-data-dir=/tmp', '-incognito'],
 
-var paths = [ "/usr/bin/google-chrome", "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome", "%HOMEPATH%i\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe", "C:\\Users\\%USERNAME%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe" ];
-var browserPath = null;
-var args = [ '*URL*', '--user-data-dir=/tmp', '-incognito'];
-Chrome.prototype.prepare = function (onComplete) {
-    var self = this;
-    onComplete(null, true);
-}
-
-Chrome.prototype.isAvailable = function (onComplete) {
-    for (var i in paths) {
-        if (fs.existsSync(paths[i])) {
-            browserPath = paths[i];
-            return onComplete(null, true);
-        }
-    }
-    if (os.platform() == "linux") {
-        which("google-chrome", function (err, res) {
-            if (res != null) {
-                paths = res;
-                return onComplete(null, true);
+        isAvailable: function (onComplete) {
+            for (var i in this.paths) {
+                if (fs.existsSync(this.paths[i])) {
+                    this.browserPath = this.paths[i];
+                    return onComplete(null, true);
+                }
             }
-            else return onComplete(null, false);
-        });
-    }
-}
-
-Chrome.prototype.openBrowser = function (url, onComplete) {
-    var browserArgs = args.map(function (arg) {
-        if (arg === '*URL*') {
-            return url;
-        } else {
-            return arg;
+            if (os.platform() == "linux") {
+                which("google-chrome", _.bind(function (err, res) {
+                    if (res != null) {
+                        this.browserPath = res;
+                        return onComplete(null, true);
+                    }
+                    else return onComplete(null, false);
+                }, this));
+            }
         }
     });
-
-    this.proc = child_process.spawn(browserPath, browserArgs);
-    if (onComplete) {
-        onComplete(null);
-    }
 }
 
-Chrome.prototype.close = function () {
-    if (this.proc) {
-        this.proc.kill();
-    }
-};
 module.exports = Chrome;

@@ -30,7 +30,7 @@ requirejs.config({
 App = {};
 define(['app'], function (App_) {
     App = App_;
-    App.io = require('socket.io').listen(20001);
+    App.io = require('socket.io', {'log level': 0}).listen(20001);
 
     var Agent = require('./scripts/agent/'),
         agent = new Agent('http://localhost:20001');

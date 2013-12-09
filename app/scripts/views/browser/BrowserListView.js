@@ -8,7 +8,7 @@ define(['marionette', 'views/browser/BrowserItemView'], function (Marionette, Br
         className: 'sidebar-nav',
         itemView: BrowserItemView,
         emptyView: Backbone.Marionette.ItemView.extend({
-            template: _.template('<li>No browsers online</li>')
+            template: _.template('<li>No enabledBrowsers online</li>')
         })
     });
 

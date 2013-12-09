@@ -15,7 +15,6 @@ define(['underscore', 'backbone', 'models/Browser'], function (_, Backbone, Brow
         },
 
         onAgentConnected: function (socket, data) {
-            console.log(data);
             _.each(data.browsers, _.bind(function (browser) {
                 this.add({name: browser, agentId: socket.id, agentName: data.agentName});
             }, this))

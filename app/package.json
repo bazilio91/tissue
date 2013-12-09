@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "socket.io": "*",
+        "socket.io-client": "*",
         "lodash": "*",
         "which": "*"
     },
