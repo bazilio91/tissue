@@ -8,7 +8,9 @@
         "backbone.marionette": "~1.4",
         "requirejs": "~2",
         "bootstrap": "https://github.com/twbs/bootstrap.git",
-        "less": "git://github.com/less/less.js.git"
+        "less": "git://github.com/less/less.js.git",
+        "html2canvas": "*",
+        "ua-parser-js": "*"
     },
     "devDependencies": {}
 }

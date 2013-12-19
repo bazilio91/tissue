@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" data-main="scripts/main.js"
+            src="bower_components/requirejs/require.js"></script>
+    <script>
+        App = {};
+        var main = function () {
+            define(['socket.io-client', 'ua-parser', 'jquery', 'agent/id'], function (io, Parser, $) {
+                var ua = new Parser();
+                var client = io.connect('http://localhost:20001');
+                client.on('connect', function () {
+                    client.emit('browser', ua.getResult(), window.sid);
+                });
+
+                client.on('eval', function (command) {
+                    eval(command);
+                });
+            });
+        }
+    </script>
+</head>
+<body style="height: 100%">
+<iframe id="frame" frameborder="0" width="100%" height="100%"
+        style="height: 100%; position: absolute"></iframe>
+</body>
+</html>

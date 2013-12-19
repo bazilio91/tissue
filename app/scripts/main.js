@@ -16,6 +16,9 @@ requirejs.config({
         marionette: {
             deps: ['jquery', 'underscore', 'backbone'],
             exports: 'Marionette'
+        },
+        'socket.io-client': {
+            exports: 'io'
         }
 
     },
@@ -23,25 +26,13 @@ requirejs.config({
         jquery: '../bower_components/jquery/jquery',
         backbone: '../bower_components/backbone/backbone',
         underscore: '../bower_components/underscore/underscore',
+        'ua-parser': '../bower_components/ua-parser-js/src/ua-parser.min',
+        'socket.io-client': '../node_modules/socket.io-client/dist/socket.io',
         marionette: '../bower_components/backbone.marionette/lib/backbone.marionette',
         templates: 'templates'
     }
 });
-App = {};
-define(['app'], function (App_) {
-    App = App_;
-    App.io = require('socket.io', {'log level': 0}).listen(20001);
-
-    var Agent = require('./scripts/agent/'),
-        agent = new Agent('http://localhost:20001');
-    App.io.server.once('listening', function () {
-        agent.listen();
-    });
-    App.agent = agent;
-    $(window).bind('beforeunload', function () {
-        App.io.server.close();
-        agent.client.disconnect();
-    });
-    App.start();
-});
+if (main && typeof main === 'function') {
+    main();
+}
 

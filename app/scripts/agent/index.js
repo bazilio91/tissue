@@ -1,7 +1,8 @@
 var BrowserManager = require('./browsers'),
     io = require('socket.io-client'),
     os = require('os'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    fs = require('fs');
 
 var Agent = function (uri) {
     'use strict';
@@ -24,6 +25,9 @@ var Agent = function (uri) {
         onConnect: function () {
             this.client.on('open', _.bind(this.onOpen, this));
             this.client.on('close', _.bind(this.onClose, this));
+            var fd = fs.openSync(__dirname + '/id.js', 'w+');
+            fs.writeSync(fd, 'window.sid = "' + client.socket.sessionid + '"');
+            fs.close(fd);
         },
 
         listen: function () {
@@ -41,6 +45,7 @@ var Agent = function (uri) {
         },
 
         open: function (browserName, url) {
+            url = __dirname + '/../../agent.html';
             browsers[browserName] = new browserManager.getBrowser(browserName)();
             browsers[browserName].open(url || 'http://66.ru', function () {
                 browsers[browserName].proc.on('exit', function () {

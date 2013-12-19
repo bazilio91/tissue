@@ -9,8 +9,8 @@ var _ = require('lodash');
 var Safari = function () {
     return _.extend(Browser, {
         name: 'safari',
-        browserPath: 'open',
-        args: [ '-a', 'Safari', '-n', '*URL*' ],
+        browserPath: '/Applications/Safari.app/Contents/MacOS/Safari',
+        args: ['*URL*'],
 
         isAvailable: function (onComplete) {
             if (os.platform() === 'darwin') {

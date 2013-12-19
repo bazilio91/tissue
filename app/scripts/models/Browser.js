@@ -1,4 +1,6 @@
 define(['backbone'], function (Backbone) {
+    "use strict";
+
     /**
      * @class Browser
      * @type {*|void|Object}
@@ -7,7 +9,15 @@ define(['backbone'], function (Backbone) {
         defaults: {
             name: 'none',
             open: false,
-            agentId: null
+            agentId: null,
+            connected: false
+        },
+
+        run: function (command) {
+            if (!this.connected) {
+                return false;
+            }
+            this.socket.emit('eval', command);
         }
     });
 
