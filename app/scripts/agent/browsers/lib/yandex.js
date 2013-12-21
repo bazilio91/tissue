@@ -9,9 +9,9 @@ var _ = require('lodash');
 var Yandex = function () {
     "use strict";
 
-    return _.extend(Browser, {
-        name: "yandex",
-        paths: [ "/Applications/Yandex.app/Contents/MacOS/Yandex"],
+    return _.extend({}, Browser, {
+        name: 'yandex',
+        paths: [ '/Applications/Yandex.app/Contents/MacOS/Yandex'],
         args: [ '*URL*', '--user-data-dir=/tmp', '-incognito'],
 
         isAvailable: function (onComplete) {

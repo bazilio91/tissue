@@ -81,17 +81,19 @@ module.exports = function (grunt) {
         "json-replace": {
             "options": {
                 space: "    ",
-                "replace" : {
-                    "window" : {
-                        "toolbar" : false
+                "replace": {
+                    "window": {
+                        "toolbar": false
                     }
                 }
             },
             "build": {
-                "files" : [{
-                    "src" : ".tmp/package.json",
-                    "dest" : ".tmp/package.json"
-                }]
+                "files": [
+                    {
+                        "src": ".tmp/package.json",
+                        "dest": ".tmp/package.json"
+                    }
+                ]
             }
         },
         shell: {
@@ -113,4 +115,11 @@ module.exports = function (grunt) {
         'nodewebkit',
         'shell:dmg'
     ]);
+
+    grunt.registerTask('agent', function () {
+        var Agent = require('./app/scripts/agent'),
+            agent = new Agent('http://localhost:20001');
+        agent.listen();
+        this.async();
+    });
 };

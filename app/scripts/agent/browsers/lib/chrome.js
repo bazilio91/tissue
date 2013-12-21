@@ -9,7 +9,7 @@ var _ = require('lodash');
 var Chrome = function () {
     "use strict";
 
-    return _.extend(Browser, {
+    return _.extend({}, Browser, {
         name: "chrome",
         paths: [ "/usr/bin/google-chrome", "/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome", "%HOMEPATH%i\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe", "C:\\Users\\%USERNAME%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe" ],
         args: [ '*URL*', '--user-data-dir=/tmp', '-incognito'],

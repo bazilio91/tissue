@@ -9,13 +9,13 @@
         var main = function () {
             define(['socket.io-client', 'ua-parser', 'jquery', 'agent/id'], function (io, Parser, $) {
                 var ua = new Parser();
-                var client = io.connect('http://localhost:20001');
+                var client = io.connect(window.socketURI);
                 client.on('connect', function () {
                     client.emit('browser', ua.getResult(), window.sid);
                 });
 
-                client.on('eval', function (command) {
-                    eval(command);
+                client.on('eval', function (command, fn) {
+                    fn(eval(command));
                 });
             });
         }

@@ -7,7 +7,7 @@ var path = require('path');
 var _ = require('lodash');
 
 var Safari = function () {
-    return _.extend(Browser, {
+    return _.extend({}, Browser, {
         name: 'safari',
         browserPath: '/Applications/Safari.app/Contents/MacOS/Safari',
         args: ['*URL*'],

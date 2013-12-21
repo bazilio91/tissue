@@ -13,11 +13,14 @@ define(['backbone'], function (Backbone) {
             connected: false
         },
 
-        run: function (command) {
-            if (!this.connected) {
-                return false;
+        run: function (command, cb) {
+            if (!this.socket) {
+                return;
             }
-            this.socket.emit('eval', command);
+
+            this.socket.emit('eval', command, function (data) {
+                cb(data);
+            });
         }
     });
 

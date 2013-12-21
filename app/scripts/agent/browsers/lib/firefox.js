@@ -6,7 +6,7 @@ var child_process = require('child_process');
 var _ = require('lodash');
 
 var Firefox = function () {
-    return _.extend(Browser, {
+    return _.extend({}, Browser, {
         name: 'firefox',
         paths: ["/Applications/Firefox.app/Contents/MacOS/firefox-bin", "%PROGRAMFILES%\\Mozilla Firefox\\firefox.exe" ],
         args: [ '*URL*', '-P tissue' ],

@@ -1,40 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Tissue</title>
     <link rel="stylesheet/less" type="text/css" href="styles/app.less"/>
     <script src="http://localhost:35729/livereload.js"></script>
     <script src="bower_components/less/dist/less-1.5.1.min.js"></script>
     <script type="text/javascript" data-main="scripts/main.js"
             src="bower_components/requirejs/require.js"></script>
-    <script>
-        App = {};
-        var main = function () {
-            define(['app'], function (App_) {
-                App = App_;
-                App.io = require('socket.io', {'log level': 0}).listen(20001);
 
-                var Agent = require('./scripts/agent/'),
-                        agent = new Agent('http://localhost:20001');
-                App.io.server.once('listening', function () {
-                    agent.listen();
-                });
-                App.agent = agent;
-                $(window).bind('beforeunload', function () {
-                    App.io.server.close();
-                    agent.client.disconnect();
-                });
-                App.start();
-
-                $('#send').click(function () {
-                    var command = $('#run').val();
-                    App.list.currentView.collection.each(function (b) {
-                        b.run(command)
-                    })
-                })
-            });
-        }
-    </script>
 </head>
 <body>
 
@@ -48,20 +21,40 @@
 
     <!-- Page content -->
     <div id="page-content-wrapper">
-        <div class="content-header">
-            <h1>
-                <a id="menu-toggle" href="#" class="btn btn-default"><i
-                        class="icon-reorder"></i></a>
-                Tissue
-            </h1>
-        </div>
         <!-- Keep all page content within the page-content inset div! -->
         <div class="page-content inset" id="main">
             Hello! We are using node.js
             <script>document.write(process.version)</script>
+            <div class="row">
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="run"
+                               value="window.location.toString()">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="send">
+                                run
+                            </button>
+                        </span>
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <!-- /.row -->
+            <pre id="result" style="height: 300px; overflow-y: auto"></pre>
 
-            <input type="text" id="run" value="alert(1)"/>
-            <button id="send">run</button>
+            <label class="checkbox">
+                Enable built-in server <input type="checkbox" id="enableServer"/>
+            </label>
+            <label class="checkbox">
+                Enable built-in agent <input type="checkbox" id="enableAgent"/>
+            </label>
+            <label>
+                Server url
+            </label>
+            <input type="url" id="serverUrl" value="http://localhost:20000"
+                   class="form-control"/>
         </div>
     </div>
 
@@ -71,6 +64,53 @@
     <span class="b-browser-item__open icon-play"></span>
     <span class="b-browser-item__close icon-stop"></span>
     <a href="#" class="js-browser-item__trigger"><%= agentName %></a>
+</script>
+<script>
+    App = {};
+    var main = function () {
+        define(['app', 'jquery'], function (App_) {
+            App = App_;
+
+
+            $(window).bind('beforeunload', function () {
+                App.disableServer();
+                App.disableAgent();
+            });
+            $('#serverUrl').change(function () {
+                App.serverUrl = $(this).val();
+            }).trigger('change');
+
+            App.start();
+
+            $('#send').click(function () {
+                var command = $('#run').val();
+                App.list.currentView.collection.each(function (b) {
+                    console.log(b);
+                    b.run(command, function (result) {
+                        $('#result').append(
+                                '<p>[' + b.get('name') + '] ' +
+                                        JSON.stringify(result) + '</p>');
+                    });
+                })
+            });
+
+            $('#enableAgent').click(function () {
+                if ($(this).is(':checked')) {
+                    App.enableAgent();
+                } else {
+                    App.disableAgent();
+                }
+            });
+
+            $('#enableServer').click(function () {
+                if ($(this).is(':checked')) {
+                    App.enableServer();
+                } else {
+                    App.disableServer();
+                }
+            });
+        });
+    }
 </script>
 </body>
 </html>

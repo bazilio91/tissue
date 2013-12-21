@@ -6,7 +6,10 @@
     "window": {
         "title": "Tissue",
         "toolbar": true,
-        "icon": "app/styles/icons/icon.png"
+        "icon": "app/styles/icons/icon.png",
+        "width": 800,
+        "height": 600,
+        "min_height": 500
     },
     "dependencies": {
         "socket.io": "*",

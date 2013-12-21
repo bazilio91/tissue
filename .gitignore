@@ -1,5 +1,7 @@
 /node_modules
+/app/node_modules
 /app/bower_components
+/app/scripts/agent/id.js
 /webkitbuilds
 /.tmp
 /.idea
