@@ -10,7 +10,7 @@ var BrowserManager = require('./browsers'),
  */
 var Agent = function (uri) {
     'use strict';
-    var client = io.connect(uri),
+    var client = io.connect(uri, {'log level': 0}),
         browsers = {},
         browserManager = new BrowserManager();
 

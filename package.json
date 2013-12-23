@@ -4,7 +4,10 @@
     "description": "Browser tab sync & testing tool",
     "main": "app/index.html",
     "scripts": {
-        "test": "grunt test"
+        "test": "grunt test",
+        "travis-cov": {
+            "threshold": 65
+        }
     },
     "repository": {
         "type": "git",
@@ -12,7 +15,6 @@
     },
     "author": "Vasily Ostanin",
     "license": "BSD-2-Clause",
-
     "dependencies": {
         "nodewebkit": "*",
         "socket.io": "*",
@@ -29,6 +31,10 @@
         "grunt-install-dependencies": "*",
         "grunt-contrib-clean": "*",
         "grunt-json-replace": "*",
-        "grunt-shell": "*"
+        "grunt-shell": "*",
+        "requirejs": "~2.1.9",
+        "grunt-mocha-test": "~0.8.1",
+        "blanket": "~1.1.6",
+        "travis-cov": "~0.2.4"
     }
 }

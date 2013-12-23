@@ -6,5 +6,6 @@
 /.tmp
 /.idea
 /*.iml
+/coverage.html
 
 .DS_Store

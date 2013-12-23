@@ -68,13 +68,30 @@
 <script>
     App = {};
     var main = function () {
-        define(['app', 'jquery'], function (App_) {
+        define([
+            'jquery',
+
+            'app',
+            'views/browser/BrowserListView'
+        ], function ($, App_, BrowserListView) {
+            var utils = require('./utils'),
+                    config = utils.getConfig();
+
             App = App_;
+
+            App.addRegions({
+                list: "#sidebar-wrapper"
+            });
+
+            App.addInitializer(function () {
+                var myView = new BrowserListView({collection: App.browsers});
+                App.list.show(myView);
+            });
 
 
             $(window).bind('beforeunload', function () {
-                App.disableServer();
-                App.disableAgent();
+                App.stopServer();
+                App.stopAgent();
             });
             $('#serverUrl').change(function () {
                 App.serverUrl = $(this).val();
@@ -94,6 +111,11 @@
                 })
             });
 
+            if (config.agent.enabled) {
+                $('#enableAgent').prop('checked', true);
+                App.enableAgent();
+            }
+
             $('#enableAgent').click(function () {
                 if ($(this).is(':checked')) {
                     App.enableAgent();
@@ -101,6 +123,12 @@
                     App.disableAgent();
                 }
             });
+
+            if (config.server.enabled) {
+                $('#enableServer').prop('checked', true);
+                App.enableServer();
+            }
+
 
             $('#enableServer').click(function () {
                 if ($(this).is(':checked')) {

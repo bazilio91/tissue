@@ -29,7 +29,8 @@ requirejs.config({
         'ua-parser': '../bower_components/ua-parser-js/src/ua-parser.min',
         'socket.io-client': '../node_modules/socket.io-client/dist/socket.io',
         marionette: '../bower_components/backbone.marionette/lib/backbone.marionette',
-        templates: 'templates'
+        templates: 'templates',
+        app: '../app'
     }
 });
 if (main && typeof main === 'function') {

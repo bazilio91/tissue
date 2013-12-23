@@ -15,7 +15,9 @@
         "socket.io": "*",
         "socket.io-client": "*",
         "lodash": "*",
-        "which": "*"
+        "which": "*",
+        "logan": "0.0.2",
+        "backbone": "~1.1.0"
     },
     "author": "Vasily Ostanin",
     "license": "BSD-2-Clause"
