@@ -1,2 +1,2 @@
 language: node_js
-install: npm install -g grunt-cli
+install: npm install -g grunt-cli && npm install
